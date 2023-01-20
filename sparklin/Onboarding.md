@@ -1,33 +1,31 @@
-# Project
+Onboarding is easy with just a few configurations in Synapse Spark Pool environment and taking code scripts from SparkLin Branch.
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+•	Upload the Jar “openlineage-spark:.jar” into the Synapse Spark Pool Packages.
 
-As the maintainer of this project, please make a few updates:
+•	Add spark configurations related to open lineage in Synapse Spark Pool.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+•	Create the Azure Function App and add functions related to SparkLin.
 
-## Contributing
+•	Create Event Grid Subscription for Blob Storage Account.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+•	Create Purview Collection where all lineage assets will reside.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+**Cluster Setup**
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+OpenLineage integrates with Spark by implementing SparkListener (SparkListenerSQLExecution, SparkListenerEvent) interface and collecting information about jobs that are executed inside a Spark application.
 
-## Trademarks
+To activate the listener, add the following properties to your Spark configuration: 
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+•	spark.extraListeners	io.openlineage.spark.agent.OpenLineageSparkListener
+
+Once the listener is activated, it needs to know where to report lineage events, as well as the namespace of your jobs. Add the following additional configuration lines to your Spark Configuration in the Spark pool.
+
+•	spark.openlineage.host                        {your.openlineage.host i.e. func app endpoint url}
+
+•	spark.openlineage.namespace            {your.openlineage.namespace}
+
+•	spark.openlineage.url.param.code     {your func app host key}
+
+•	spark.openlineage.version                   { 1 or v1 depends on the jar}
+
+ 
