@@ -30,6 +30,8 @@ Once the listener is activated, it needs to know where to report lineage events,
 
 Azure Table Storages:
 We work with 2 azure table storage one is EventMetadata and other is Lineage Details
+**Creation**
+Open sotrage account and go to **Tables** and create two new tables.
 
 EventMetadata is used to store all events information which is triggered by open lineage and to track parsing status of each event.
 Structure of EventMetadata looks like:
@@ -64,5 +66,7 @@ HTTP Trigger Function App
 2. function app will store this json data as file into blob storage
 3. function app will insert an entry in eventmetadata table with status as Unprocessed for this particular json file
 
-Blob Trigger Functiokn App:
-1. 
+Blob Trigger Function App
+1. Create new blob trigger function which will get tiggered as and when new blobs will be uploaded by http trigger function app
+2. It will then query EventMetadata table and consider all records which are in status of 'Unprocessed'
+3. Then for each json it will start json parsing code and push all lineage details to ''LineageDetails' Azure table
