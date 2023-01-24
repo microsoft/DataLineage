@@ -20,12 +20,12 @@ To activate the listener, add the following properties to your Spark configurati
 
 Once the listener is activated, it needs to know where to report lineage events, as well as the namespace of your jobs. Add the following additional configuration lines to your Spark Configuration in the Spark pool.
 
-•	spark.openlineage.host                        {your.openlineage.host i.e. func app endpoint url}
+•	spark.openlineage.host                 {your.openlineage.host i.e. func app endpoint url}
 
 •	spark.openlineage.namespace            {your.openlineage.namespace}
 
-•	spark.openlineage.url.param.code     {your func app host key}
+•	spark.openlineage.url.param.code       {your func app host key}
 
-•	spark.openlineage.version                   { 1 or v1 depends on the jar}
+•	spark.openlineage.version              { 1 or v1 depends on the jar}
 
  
