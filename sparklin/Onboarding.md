@@ -32,6 +32,7 @@ Azure Table Storages:
 We work with 2 azure table storage one is EventMetadata and other is Lineage Details
 **Creation**
 Open sotrage account and go to **Tables** and create two new tables.
+
 <img width="248" alt="image" src="https://user-images.githubusercontent.com/123259339/214266628-8ce0ccc7-0811-481e-bc5d-ef97b7cf992a.png">
 
 
