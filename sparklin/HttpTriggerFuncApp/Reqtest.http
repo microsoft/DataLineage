@@ -1,0 +1,7 @@
+POST http://localhost:7071/api/sparkopenlineage
+Connect-Type: application/json
+
+{
+    "name" : "Yogesh",
+    "age" : 28
+}
