@@ -29,10 +29,18 @@ Once the listener is activated, it needs to know where to report lineage events,
 
 •	spark.openlineage.version              { 1 or v1 depends on the jar}
 
-Azure Table Storages:
-We work with 2 azure table storage one is EventMetadata and other is Lineage Details
+
+
+**Storage Account Setup**
+Create new storage account in Azure portal by using portal wizard.
+    •	create new container and name it as **openlineage**
+
+
+**Azure Table Storages setup**
+We work with 2 azure table storages one is EventMetadata and other is LineageDetails
+
 **Creation**
-Open sotrage account and go to **Tables** and create two new tables.
+Open your sotrage account and go to **Tables** and create two new tables.
 
 <img width="248" alt="image" src="https://user-images.githubusercontent.com/123259339/214266628-8ce0ccc7-0811-481e-bc5d-ef97b7cf992a.png">
 
@@ -65,27 +73,33 @@ Structure of LineageDetails table looks like:
  
 After we have both azure storage tables, we make use of HTTP and Blob Storage based Azure functions to process all open lineage produced jsons.
 
+**Function Apps Set up **
+
 HTTP Trigger Function App:
-Create new http trigger function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data.
+Create new function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data.
+
+Deployment:
 
 Add new Configurations in Function App:
 ConnectionString   :   < your new storage account connection string >
 ContainerName      :   openlineage
 TableName          :   EventMetadata
 
-**Processing Steps**
+**What does function do**
 1. App will store this json data as file into blob storage
 2. App will insert an entry in eventmetadata table with status as Unprocessed for this particular json file
 
 Blob Trigger Function App:
-Create new blob trigger function which will get tiggered as and when new blobs will be uploaded by http trigger function app
+Create new function app on azure portal with application insights enabled which will get tiggered as and when new blobs will be uploaded by http trigger function app.
+
+Deployment:
 
 Add new Configurations in Function App:
 datalineagesynapsestrpoc_STORAGE   :   < your new storage account connection string >
 StorageTableName                   :   LineageDetails
 TableName                          :   EventMetadata
 
-**Processing steps**
+**What does function do**
 1. App will query EventMetadata table and take all records which are in status of 'Unprocessed'
 2. For every event, App will read json file from blob storage and start parsing it using Python code and push all lineage details to ''LineageDetails' Azure table
 3. Finally App will update status of working event as 'Processed' if lineage is pushed and 'Failed' if something fails and update 'Message' column with exception details.
