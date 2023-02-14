@@ -79,6 +79,7 @@ HTTP Trigger Function App:
 Create new function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data.
 
 Deployment:
+Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/HttpTriggerFuncApp
 
 Add new Configurations in Function App:
 ConnectionString   :   < your new storage account connection string >
@@ -93,6 +94,7 @@ Blob Trigger Function App:
 Create new function app on azure portal with application insights enabled which will get tiggered as and when new blobs will be uploaded by http trigger function app.
 
 Deployment:
+Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/BlobTriggerFuncApp
 
 Add new Configurations in Function App:
 datalineagesynapsestrpoc_STORAGE   :   < your new storage account connection string >
