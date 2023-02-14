@@ -1,12 +1,13 @@
 Onboarding is easy with just a few configurations in Synapse Spark Pool environment and taking code scripts from SparkLin Branch.
+Overall Steps looks like:
 
 • Upload the Jar “openlineage-spark:.jar” into the Synapse Spark Pool Packages.
 
 •	Add spark configurations related to open lineage in Synapse Spark Pool.
 
-•	Create the Azure Function App and add functions related to SparkLin.
+•	Create a new storage account with a blob container name openlineage to have all json files uploaded and 2 azure table storage (EventMetadata and LineageDetails)
 
-•	Create Event Grid Subscription for Blob Storage Account.
+•	Create the Azure Function App and add functions related to SparkLin.
 
 •	Create Purview Collection where all lineage assets will reside.
 
@@ -65,7 +66,12 @@ Structure of LineageDetails table looks like:
 After we have both azure storage tables, we make use of HTTP and Blob Storage based Azure functions to process all open lineage produced jsons.
 
 HTTP Trigger Function App:
-Create new http trigger function app which will be connected to openlineage over http endpoint to make PUSH requests with json type data
+Create new http trigger function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data.
+
+Add new Configurations in Function App:
+ConnectionString   :   < your new storage account connection string >
+ContainerName      :   openlineage
+TableName          :   EventMetadata
 
 **Processing Steps**
 1. App will store this json data as file into blob storage
@@ -73,6 +79,11 @@ Create new http trigger function app which will be connected to openlineage over
 
 Blob Trigger Function App:
 Create new blob trigger function which will get tiggered as and when new blobs will be uploaded by http trigger function app
+
+Add new Configurations in Function App:
+datalineagesynapsestrpoc_STORAGE   :   < your new storage account connection string >
+StorageTableName                   :   LineageDetails
+TableName                          :   EventMetadata
 
 **Processing steps**
 1. App will query EventMetadata table and take all records which are in status of 'Unprocessed'
