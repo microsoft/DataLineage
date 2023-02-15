@@ -107,3 +107,7 @@ TableName                          :   EventMetadata
 1. App will query EventMetadata table and take all records which are in status of 'Unprocessed'
 2. For every event, App will read json file from blob storage and start parsing it using Python code and push all lineage details to ''LineageDetails' Azure table
 3. Finally App will update status of working event as 'Processed' if lineage is pushed and 'Failed' if something fails and update 'Message' column with exception details.
+
+**Note: Limitations**
+Based on our usecases we have implemented the parser, if we find any new edge usecases, we need to enhance the Parser.
+Currently it supports Spark 3.1, for greater Spark versions Parser enhancement is required.
