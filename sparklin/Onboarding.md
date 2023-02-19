@@ -83,9 +83,9 @@ Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/spa
 
 Add new Configurations in Function App:
 
-• ConnectionString   :   < your new storage account connection string >
-• ContainerName      :   openlineage
-• TableName          :   EventMetadata
+ConnectionString   :   < your new storage account connection string >
+ContainerName      :   openlineage
+TableName          :   EventMetadata
 
 **What does function do**
 1. App will store this json data as file into blob storage
