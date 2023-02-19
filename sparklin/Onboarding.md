@@ -1,15 +1,15 @@
 Onboarding is easy with just a few configurations in Synapse Spark Pool environment and taking code scripts from SparkLin Branch.
 Overall Steps looks like:
 
-• Upload the Jar “openlineage-spark:.jar” into the Synapse Spark Pool Packages.
+&emsp;1. Upload the Jar “openlineage-spark:.jar” into the Synapse Spark Pool Packages.
 
-•	Add spark configurations related to open lineage in Synapse Spark Pool.
+&emsp;2. Add spark configurations related to open lineage in Synapse Spark Pool.
 
-•	Create a new storage account with a blob container name openlineage to have all json files uploaded and 2 azure table storage (EventMetadata and LineageDetails)
+&emsp;3. Create a new storage account with a blob container name openlineage to have all json files uploaded and 2 azure table storage (EventMetadata and LineageDetails)
 
-•	Create the Azure Function App and add functions related to SparkLin.
+&emsp;4. Create the Azure Function Apps and  functions related to SparkLin.
 
-•	Create Purview Collection where all lineage assets will reside.
+&emsp;5. Create Purview Collection where all lineage assets will reside.
 
 **Cluster Setup**
 
@@ -17,29 +17,32 @@ OpenLineage integrates with Spark by implementing SparkListener (SparkListenerSQ
 
 To activate the listener, add the following properties to your Spark configuration: 
 
-•	spark.extraListeners	io.openlineage.spark.agent.OpenLineageSparkListener
+&emsp;•	spark.extraListeners	io.openlineage.spark.agent.OpenLineageSparkListener
 
 Once the listener is activated, it needs to know where to report lineage events, as well as the namespace of your jobs. Add the following additional configuration lines to your Spark Configuration in the Spark pool.
 
-•	spark.openlineage.host                 {your.openlineage.host i.e. func app endpoint url}
+&emsp;•	spark.openlineage.host                 {your.openlineage.host i.e. func app endpoint url}
 
-•	spark.openlineage.namespace            {your.openlineage.namespace}
+&emsp;•	spark.openlineage.namespace            {your.openlineage.namespace}
 
-•	spark.openlineage.url.param.code       {your func app host key}
+&emsp;•	spark.openlineage.url.param.code       {your func app host key}
 
-•	spark.openlineage.version              { 1 or v1 depends on the jar}
-
+&emsp;•	spark.openlineage.version              { 1 or v1 depends on the jar}
 
 
 **Storage Account Setup**
+
 Create new storage account in Azure portal by using portal wizard.
-    •	create new container and name it as **openlineage**
+
+&emsp;• create new container and name it as **openlineage**
 
 
 **Azure Table Storages setup**
+
 We work with 2 azure table storages, one to store all events and their processing status and other is to store all lineage details.
 
-**Creation**
+**Creation steps:**
+
 Open your sotrage account and go to **Tables** and create two new blank tables and name them as EventMetadata and LineageDetails.
 
 <img width="248" alt="image" src="https://user-images.githubusercontent.com/123259339/214266628-8ce0ccc7-0811-481e-bc5d-ef97b7cf992a.png">
@@ -73,18 +76,22 @@ Structure of LineageDetails table looks like:
  
 After we have both azure storage tables, we make use of HTTP and Blob Storage based Azure functions to process all open lineage produced jsons.
 
-**Function Apps Set up **
+**Function Apps Set up Steps: **
 
 HTTP Trigger Function App:
+
 Create new function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data. This is C# based function app.
 
 Deployment:
+
 Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/OpenLineage
 
 Add new Configurations in Function App:
 
 ConnectionString   :   < your new storage account connection string >
+
 ContainerName      :   openlineage
+
 TableName          :   EventMetadata
 
 **What does function do**
@@ -92,15 +99,19 @@ TableName          :   EventMetadata
 2. App will insert an entry in eventmetadata table with status as Unprocessed for this particular json file
 
 Blob Trigger Function App:
+
 Create new function app on azure portal with application insights enabled which will get tiggered as and when new blobs will be uploaded by http trigger function app. This is python based function app.
 
 Deployment:
+
 Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/BlobTriggerFuncApp
 
 Add new Configurations in Function App:
 
 datalineagesynapsestrpoc_STORAGE   :   < your new storage account connection string >
+
 StorageTableName                   :   LineageDetails
+
 TableName                          :   EventMetadata
 
 **What does function do**
