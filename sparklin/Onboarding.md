@@ -76,13 +76,12 @@ After we have both azure storage tables, we make use of HTTP and Blob Storage ba
 **Function Apps Set up **
 
 HTTP Trigger Function App:
-Create new function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data.
+Create new function app on azure portal with application insights enabled which will provide a http endpoint for spark cluster to make PUSH requests with json type data. This is C# based function app.
 
 Deployment:
-Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/HttpTriggerFuncApp
+Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/OpenLineage
 
 Add new Configurations in Function App:
-Name               :   Value
 
 • ConnectionString   :   < your new storage account connection string >
 • ContainerName      :   openlineage
@@ -93,12 +92,13 @@ Name               :   Value
 2. App will insert an entry in eventmetadata table with status as Unprocessed for this particular json file
 
 Blob Trigger Function App:
-Create new function app on azure portal with application insights enabled which will get tiggered as and when new blobs will be uploaded by http trigger function app.
+Create new function app on azure portal with application insights enabled which will get tiggered as and when new blobs will be uploaded by http trigger function app. This is python based function app.
 
 Deployment:
 Deploy function from URL: https://github.com/microsoft/DataLineage/tree/main/sparklin/BlobTriggerFuncApp
 
 Add new Configurations in Function App:
+
 datalineagesynapsestrpoc_STORAGE   :   < your new storage account connection string >
 StorageTableName                   :   LineageDetails
 TableName                          :   EventMetadata
