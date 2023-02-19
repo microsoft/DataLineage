@@ -37,16 +37,16 @@ Create new storage account in Azure portal by using portal wizard.
 
 
 **Azure Table Storages setup**
-We work with 2 azure table storages one is EventMetadata and other is LineageDetails
+We work with 2 azure table storages, one to store all events and their processing status and other is to store all lineage details.
 
 **Creation**
-Open your sotrage account and go to **Tables** and create two new tables.
+Open your sotrage account and go to **Tables** and create two new blank tables and name them as EventMetadata and LineageDetails.
 
 <img width="248" alt="image" src="https://user-images.githubusercontent.com/123259339/214266628-8ce0ccc7-0811-481e-bc5d-ef97b7cf992a.png">
 
 
-EventMetadata table is used to store all events information which is triggered by open lineage and to track parsing status each event.
-Structure of EventMetadata table looks like:
+EventMetadata table is used to store all events information which is triggered by open lineage and to track parsing status of each event.
+Structure of EventMetadata table looks like below after rows generated:
 1. PartitionKey
 2. RowKey
 3. Timestamp
