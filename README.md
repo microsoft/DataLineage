@@ -11,7 +11,7 @@ products:
 - analysis services
 - datalake
 
-name: Data Lineage
+name: **Data Lineage**
 description: End to end data lineage from source to visualizations.
 ---
 
