@@ -23,9 +23,9 @@ Once the listener is activated, it needs to know where to report lineage events,
 
 &emsp;•	spark.openlineage.host                 {your.openlineage.host i.e. func app endpoint url}
 
-&emsp;•	spark.openlineage.namespace            {your.openlineage.namespace}
+&emsp;•	spark.openlineage.namespace            {your workspacename}
 
-&emsp;•	spark.openlineage.url.param.code       {your func app host key}
+&emsp;•	spark.openlineage.url.param.code       {your func app host key (default key)}
 
 &emsp;•	spark.openlineage.version              { 1 or v1 depends on the jar}
 
